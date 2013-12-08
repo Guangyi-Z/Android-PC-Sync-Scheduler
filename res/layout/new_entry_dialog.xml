@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	
+	<LinearLayout 
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/dialog_title">
+		<TextView android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:id="@+id/dialog_title_tv" 
+		    android:text="Title: " />
+		<EditText 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content" 
+		    android:id="@+id/dialog_title_et" android:minWidth="100dip"/>
+　　</LinearLayout>
+	<LinearLayout 
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/dialog_info">
+		<TextView android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:id="@+id/dialog_info_tv" 
+		    android:text="Content: " />
+		<EditText 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content" 
+		    android:id="@+id/dialog_info_et" android:minWidth="100dip"/>
+　　</LinearLayout>
+	<LinearLayout 
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/dialog_begintime">
+		<TextView android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:id="@+id/dialog_beg_tv" 
+		    android:text="Begin Time(hh:mm) " />
+		<EditText 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content" 
+		    android:id="@+id/dialog_beg_et" android:minWidth="100dip"/>
+　　</LinearLayout>
+		<LinearLayout 
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/dialog_endtime">
+		<TextView android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    android:id="@+id/dialog_end_tv" 
+		    android:text="End Time (hh:mm): " />
+		<EditText 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content" 
+		    android:id="@+id/dialog_end_et" android:minWidth="100dip"/>
+　　</LinearLayout>
+	
+</LinearLayout>

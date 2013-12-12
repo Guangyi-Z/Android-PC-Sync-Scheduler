@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						ScheduleEntry en= new ScheduleEntry();
-						en.setId("ID_"+(int)(Math.random()*100000)); 	// id range (0,100000)
+						en.setId("ID_"+(int)(Math.random()*100000)); 
 						en.setDate("" + year + "-" + month + "-" + day);
 						en.setSyncFlag(ScheduleEntry.FLAG_NEW);
 						// get value entered by user

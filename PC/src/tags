@@ -1,0 +1,124 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CALENDAR	calendar.c	2;"	d	file:
+CALENDAR	calendar.h	2;"	d
+CC	Makefile	/^CC=gcc$/;"	m
+COL_MAX	display.h	7;"	d
+COMM_MAX_LEN	distributor.c	9;"	d	file:
+DAYS_MAX_LEN	calendar.c	7;"	d	file:
+DE_ENTRY	db_entry.h	2;"	d
+DISPLAY	display.h	2;"	d
+DISTRIBUTOR	distributor.h	2;"	d
+ENTRY	entry.h	2;"	d
+ENTRYLIST	entrylist.h	2;"	d
+Entry	entry.h	/^struct Entry {$/;"	s
+HDREXTS	Makefile	/^HDREXTS= .h .H$/;"	m
+LEN_BEGINTIME	entry.h	9;"	d
+LEN_DATE	entry.h	8;"	d
+LEN_ENDTIME	entry.h	10;"	d
+LEN_ID	entry.h	5;"	d
+LEN_INFO	entry.h	7;"	d
+LEN_TITLE	entry.h	6;"	d
+MYCTAGS	Makefile	/^MYCTAGS=-c -g -Wall -std=c99$/;"	m
+MYLIBS	Makefile	/^MYLIBS=$/;"	m
+NCOL_ALERT	display.h	27;"	d
+NCOL_CALENDAR	display.h	12;"	d
+NCOL_COMM	display.h	22;"	d
+NCOL_LIST	display.h	17;"	d
+NROW_ALERT	display.h	26;"	d
+NROW_CALENDAR	display.h	11;"	d
+NROW_COMM	display.h	21;"	d
+NROW_LIST	display.h	16;"	d
+OBJS	Makefile	/^    OBJS    = $(addsuffix .o, $(basename $(SOURCES)))  $/;"	m
+PARSER	parser.h	2;"	d
+PROGRAM	Makefile	/^PROGRAM=scheduler$/;"	m
+ROW_MAX	display.h	6;"	d
+SOURCES	Makefile	/^    SOURCES = $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)\/*,$(SRCEXTS))))  $/;"	m
+SQL_MAX_LEN	db_entry.c	8;"	d	file:
+SRCDIRS	Makefile	/^SRCDIRS= .$/;"	m
+SRCEXTS	Makefile	/^SRCEXTS= .c .C$/;"	m
+SYNC_MODIFIED	entry.h	26;"	d
+SYNC_NEW	entry.h	25;"	d
+SYNC_UNCHANGED	entry.h	24;"	d
+XALERT	display.h	24;"	d
+XCALENDAR	display.h	9;"	d
+XCOMM	display.h	19;"	d
+XLIST	display.h	14;"	d
+YALERT	display.h	25;"	d
+YCALENDAR	display.h	10;"	d
+YCOMM	display.h	20;"	d
+YLIST	display.h	15;"	d
+aDays	calendar.c	/^int aDays[DAYS_MAX_LEN];$/;"	v
+aDays_len	calendar.c	/^int aDays_len= 0;$/;"	v
+addEntry	entrylist.c	/^void addEntry(char* title, char* info, char* date, char* beginTime, char* endTime) {	$/;"	f
+beginTime	entry.h	/^	char beginTime[LEN_BEGINTIME];$/;"	m	struct:Entry
+callback	db_entry.c	/^static int callback(void *NotUsed, int argc, char **argv, char **azColName){$/;"	f	file:
+cb_getEntryList	db_entry.c	/^static int cb_getEntryList(void *l, int argc, char **argv, char **azColName){$/;"	f	file:
+comm	distributor.c	/^char comm[COMM_MAX_LEN];$/;"	v
+date	entry.h	/^	char date[LEN_DATE];$/;"	m	struct:Entry
+db	db_entry.c	/^sqlite3 *db;$/;"	v
+db_addEntry	db_entry.c	/^void db_addEntry(struct Entry e){$/;"	f
+db_close	db_entry.c	/^void db_close(){$/;"	f
+db_getEntryList	db_entry.c	/^int db_getEntryList(struct Entry* l, char* date){$/;"	f
+db_initial	db_entry.c	/^void db_initial(){$/;"	f
+delEntry	entrylist.c	/^void delEntry(int y, int m, int d, int N){$/;"	f
+distribute	distributor.c	/^void distribute(){$/;"	f
+doAdd	distributor.c	/^bool doAdd(char* comm){$/;"	f
+doDay	distributor.c	/^bool doDay(char* comm){$/;"	f
+doDel	distributor.c	/^bool doDel(char* comm){$/;"	f
+doModify	distributor.c	/^bool doModify(char* comm){$/;"	f
+doMonth	distributor.c	/^bool doMonth(char *comm){$/;"	f
+drawCalendar	calDisp.c	/^void drawCalendar(){$/;"	f
+drawEntryList	entrylistDisp.c	/^void drawEntryList(int y, int m, int d){$/;"	f
+emptyEntryList	entrylistDisp.c	/^void emptyEntryList(){$/;"	f
+endTime	entry.h	/^	char endTime[LEN_ENDTIME];$/;"	m	struct:Entry
+getCalendarArray	calendar.c	/^int getCalendarArray(int** ap){$/;"	f
+getCommWithTip	commDisp.c	/^bool getCommWithTip(const char* tip, const char* comm){$/;"	f
+getDayLenOfMonth	calendar.c	/^int getDayLenOfMonth(int y, int m){$/;"	f
+getEntry	entrylist.c	/^struct Entry getEntry(int _n){$/;"	f
+getEntryList	entrylist.c	/^int getEntryList(struct Entry* l, int y, int m, int d){$/;"	f
+goNextDay	calendar.c	/^void goNextDay(int* y, int* m, int *d){$/;"	f
+goPrevDay	calendar.c	/^void goPrevDay(int* y, int* m, int *d){$/;"	f
+id	entry.h	/^	char id[LEN_ID];$/;"	m	struct:Entry
+info	entry.h	/^	char info[LEN_INFO];$/;"	m	struct:Entry
+initialAlert	alertDisp.c	/^void initialAlert(){$/;"	f
+initialCalWin	calDisp.c	/^void initialCalWin(){$/;"	f
+initialComm	commDisp.c	/^void initialComm(){$/;"	f
+initialDistributor	distributor.c	/^void initialDistributor(){$/;"	f
+initialEntrylistWin	entrylistDisp.c	/^void initialEntrylistWin(){$/;"	f
+isLeapYear	calendar.c	/^bool isLeapYear(int y){$/;"	f
+isValidDay	calendar.c	/^bool isValidDay(int y, int m, int d){$/;"	f
+isValidMonth	calendar.c	/^bool isValidMonth(int y, int m){$/;"	f
+le	db_entry.c	/^struct Entry* le;$/;"	v	typeref:struct:Entry
+le	entrylistDisp.c	/^struct Entry le[11];	\/\/ at most 11 entry a day$/;"	v	typeref:struct:Entry
+main	main.c	/^int main(){$/;"	f
+modEntry	entrylist.c	/^void modEntry(int y, int m, int d, int N){$/;"	f
+nCubeHeight	calDisp.c	/^int nCubeHeight= 1,$/;"	v
+nCubeWidth	calDisp.c	/^	nCubeWidth= 3;$/;"	v
+nEntryHeight	entrylistDisp.c	/^int nEntryHeight= 2;	\/\/ each entry takes up 2 lines within the winList$/;"	v
+nle	db_entry.c	/^int nle;$/;"	v
+nle	entrylistDisp.c	/^int nle;	\/\/ length of entries$/;"	v
+parseOneInt	parser.c	/^int parseOneInt(char* str){$/;"	f
+parseTwoInt	parser.c	/^void parseTwoInt(char* str, int* n1, int *n2){$/;"	f
+printAlert	alertDisp.c	/^void printAlert(char* msg){$/;"	f
+show_day	distributor.c	/^	show_day;$/;"	v
+show_month	distributor.c	/^	show_month,$/;"	v
+show_year	distributor.c	/^int show_year,$/;"	v
+syncFlag	entry.h	/^	int syncFlag;$/;"	m	struct:Entry
+sys_day	distributor.c	/^	sys_day;$/;"	v
+sys_month	distributor.c	/^	sys_month,$/;"	v
+sys_year	distributor.c	/^int sys_year,$/;"	v
+tableName	db_entry.c	/^char* tableName;$/;"	v
+tipComm	distributor.c	/^char* tipComm= "$> ";$/;"	v
+title	calDisp.c	/^char* title= "Calendar";$/;"	v
+title	entry.h	/^	char title[LEN_TITLE];$/;"	m	struct:Entry
+updateCalendar	calendar.c	/^bool updateCalendar(int y, int m, int d){$/;"	f
+winAlert	display.h	/^WINDOW* winAlert;$/;"	v
+winCal	display.h	/^WINDOW* winCal;$/;"	v
+winComm	display.h	/^WINDOW* winComm;$/;"	v
+winList	display.h	/^WINDOW* winList;$/;"	v
+zErrMsg	db_entry.c	/^char* zErrMsg;$/;"	v

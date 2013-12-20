@@ -1,12 +1,7 @@
 package com.example.scheduler;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +12,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -102,7 +97,7 @@ public class MainActivity extends Activity {
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub
 						ScheduleEntry en= new ScheduleEntry();
-						en.setId("ID_"+(int)(Math.random()*100000)); 	// id range (0,100000)
+						en.setId("ID_"+(int)(Math.random()*100000)); 
 						en.setDate("" + year + "-" + month + "-" + day);
 						en.setSyncFlag(ScheduleEntry.FLAG_NEW);
 						// get value entered by user
@@ -217,8 +212,6 @@ public class MainActivity extends Activity {
 				// SimpleAdapter return a Map
 		        Map<String,Object> map = (HashMap<String,Object>)lv.getItemAtPosition(position);
 		        final String id= (String)map.get("id_schedule");
-		        int flag= Integer.parseInt( (String)map.get("sync_flag") );
-		        final boolean isNew= flag % 2 == 1;
 		        
 				new AlertDialog.Builder(MainActivity.this)
 					.setTitle("Delete Entry")
@@ -227,9 +220,7 @@ public class MainActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							if( isNew )
-								dbh.deleteEntry(id);
-							dbh.markDeleteEntry(id);
+							dbh.deleteEntry(id);
 					        updateListView(year, month, day);
 						}
 					}).setNegativeButton("Cancel", null)
@@ -263,170 +254,9 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		menu.getItem(0).setTitle("Sync Now!");
 		return true;
 	}
 	
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //得到Id
-        switch (item.getItemId()) {
-        case R.id.action_settings:
-        	sync();
-        	MainActivity.this.updateListView(year, month, day);
-            break;
-        default: ;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-	
-	/*
-	 * sync with the PC scheduler
-	 */
-	private void sync() {
-		// TODO Auto-generated method stub
-		
-		// make a socket
-	    Socket socket= null;
-	    InputStreamReader in= null;
-	    PrintWriter out= null;
-		try {
-			socket = new Socket("192.168.1.104", 9555);
-			if(socket.isConnected())
-				Log.i("TEST","connected");
-		    out = new PrintWriter(socket.getOutputStream(),true); 
-		    in = new InputStreamReader(socket.getInputStream());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-	    
-		// send entries with flag != 0
-		List<Map<String,Object>> l= dbh.querySyncEntries();
-		for( Map<String, Object> m : l ){
-			StringBuilder sb= new StringBuilder();
-			sb.append("id:");
-			sb.append((String)m.get("id"));
-			sb.append(";");
-			sb.append("title:");
-			sb.append((String)m.get("title"));
-			sb.append(";");
-			sb.append("info:");
-			sb.append((String)m.get("info"));
-			sb.append(";");
-			sb.append("date:");
-			sb.append((String)m.get("date"));
-			sb.append(";");
-			sb.append("beginTime:");
-			sb.append((String)m.get("beginTime"));
-			sb.append(";");
-			sb.append("endTime:");
-			sb.append((String)m.get("endTime"));
-			sb.append(";");
-			sb.append("syncFlag:");
-			sb.append((Integer)m.get("syncFlag")+"");
-			sb.append(";");
-			String sEntry= sb.toString();
-			Log.i("TEST_SEND", sEntry);
-			out.write(sEntry);
-			out.flush();
-			char[] resp= new char[5];
-			try {
-				in.read(resp);
-				StringBuilder fb= new StringBuilder();
-				for(char c : resp){
-					if( c != '\0')
-						fb.append(c);
-				}
-				Log.v("TEST SEND FEEDBACK", fb.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		// end the sending with a string of all '\0'
-		out.write("\0");	// ending for sending data 
-		out.flush();
-		// clear all the entries
-		dbh.deleteAllEntries();
-		// read entries from PC
-		final int BUF_SIZE= 1024;
-		char[] buf= new char[BUF_SIZE];
-		try {
-			while(true){
-				in.read(buf);
-				if( buf[0] == '\0')
-					break;
-				// parse the buf into an entry
-				StringBuilder bufsb= new StringBuilder();
-				for(char c : buf){
-					if( c != '\0')
-						bufsb.append(c);
-				}
-				String s= bufsb.toString();
-				Log.i("TEST_READ", s);
-				
-				ScheduleEntry e= new ScheduleEntry();
-				
-				int beg= 0,
-					end= 0;
-				String sub;
-				beg= s.indexOf(':') + 1;
-				end= s.indexOf(';');
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setId(sub);
-				
-				beg= s.indexOf(':', beg) + 1;
-				end= s.indexOf(';', end+1);
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setTitle(sub);
-				
-				beg= s.indexOf(':', beg) + 1;
-				end= s.indexOf(';', end+1);
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setInfo(sub);
-				
-				beg= s.indexOf(':', beg) + 1;
-				end= s.indexOf(';', end+1);
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setDate(sub);
-				
-				beg= s.indexOf(':', beg) + 1;
-				end= s.indexOf(';', end+1);
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setBeginTime(sub);
-				
-				beg= s.indexOf("endTime:", beg) + 8;
-				end= s.indexOf(';', end+1);
-				sub= s.substring(beg, end);
-				Log.i("TEST", sub);
-				e.setEndTime(sub);
-				
-				e.setSyncFlag(0);	// set flag to 0
-				
-				dbh.insertNewEntry(e);
-				
-				out.write("OK");	// ending for sending data 
-				out.flush();
-			}
-			
-			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
 	/**
 	 * return from Calendar activity, get selected day from calendar 
 	 * and update the year/month/day of showing schedule

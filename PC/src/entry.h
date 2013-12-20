@@ -24,5 +24,6 @@ struct Entry {
 #define SYNC_UNCHANGED 0
 #define SYNC_NEW 1
 #define SYNC_MODIFIED 2
+#define SYNC_DELETED 4
 
 #endif

@@ -78,7 +78,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	}
 	
 	public void deleteEntry(String id){
-		String sql="DELETE FROM " + TABLE_NAME + " WHERE " +
+		String sql="DELETE FROM " + TABLE_NAME +
+				" WHERE " +
 				"id='" + id+ "';";  
 		try {
             db.execSQL(sql);  
@@ -86,6 +87,24 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		} catch (Exception e){  
             Log.v(TAG_DB,"delete Table err ,sql: "+sql);  
         }  
+		
+	}
+	
+	public void markDeleteEntry(String id) {
+		String sql="UPDATE " + TABLE_NAME + " SET syncFlag = " +
+				"( CASE syncFlag" +
+				" WHEN 0 THEN 4" +
+				" WHEN 2 THEN 6" +
+				" ELSE syncFlag END)" +
+				" WHERE" +
+				" id='" + id+ "';";  
+		try {
+            db.execSQL(sql);  
+            Log.v(TAG_DB,"delete Table ok: " + sql);  
+		} catch (Exception e){  
+            Log.v(TAG_DB,"delete Table err ,sql: "+sql);  
+        }  
+		
 	}
 	
 	public List<Map<String, Object>> queryEntries(int _y, int _m, int _d){
@@ -100,7 +119,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     + "endTime,"
                     + "syncFlag" +
                     " FROM " + TABLE_NAME + 
-                    " WHERE " + TABLE_NAME + ".date = '" + d + "';";
+                    " WHERE " + TABLE_NAME + ".date = '" + d + "' " +
+                    		"AND syncFlag != " + ScheduleEntry.FLAG_DELETED + 
+                    		" AND syncFlag != " + (ScheduleEntry.FLAG_MODIFIED+ScheduleEntry.FLAG_DELETED) +
+                    		";";
 	    // entry data vars
 	    String id,
 		   title,
@@ -141,6 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 				+ "title='" + _e.getTitle() + "' ,"
 				+ "info='" + _e.getInfo() + "' ,"
 				+ "beginTime='" + _e.getBeginTime() + "' ,"
+				+ "date='" + _e.getDate() + "' ,"
 				+ "endTime='" + _e.getEndTime() + "' ,"
 				+ "syncFlag='" + _e.getSyncFlag() + "' "
 				+ "WHERE id='"+ _e.getId() + "';";  
@@ -152,4 +175,64 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }  
 	}
 
+	public List<Map<String, Object>> querySyncEntries(){
+		List<Map<String, Object>> l= new ArrayList<Map<String, Object>>();
+		
+		String sql= "SELECT id,"  
+                    + "title,"
+                    + "info,"
+                    + "date,"
+                    + "beginTime,"
+                    + "endTime,"
+                    + "syncFlag" +
+                    " FROM " + TABLE_NAME + 
+                    " WHERE " + TABLE_NAME + ".syncFlag != 0 ;";
+	    // entry data vars
+	    String id,
+		   title,
+		   info,
+		   beginTime,
+		   endTime,
+		   date;
+	    int syncFlag;
+	    // iterate the cursor
+	    Cursor c= db.rawQuery(sql, null); 
+	    c.moveToFirst(); 
+	    while (! c.isAfterLast()) { 
+	    	id= c.getString(0);
+	        title= c.getString(1); 
+	        info= c.getString(2);
+	        date= c.getString(3);
+	        beginTime= c.getString(4);
+	        endTime= c.getString(5);
+	        syncFlag= c.getInt(6);
+	        // each map in the list stand for one node in ListView
+	        Map<String, Object> m= new HashMap<String, Object>();
+	        m.put("id", id);
+	        m.put("title", title);
+	        m.put("info", info);
+	        m.put("date", date);
+	        m.put("beginTime", beginTime);
+	        m.put("endTime", endTime);
+	        m.put("syncFlag", syncFlag);
+	        
+	        l.add(m);
+	        
+	        c.moveToNext(); 
+	    } 
+	    c.close();
+	    return l;
+	}
+
+	public void deleteAllEntries() {
+		String sql="DELETE FROM " + TABLE_NAME + ";";
+		try {
+            db.execSQL(sql);  
+            Log.v(TAG_DB,"delete Table ok: " + sql);  
+		} catch (Exception e){  
+            Log.v(TAG_DB,"delete Table err ,sql: "+sql);  
+        }  
+		
+	}
+	
 }

@@ -22,7 +22,12 @@ int getEntryList(struct Entry* l, int y, int m, int d){
 }
 
 bool delEntry(struct Entry* _e){
-	return db_delEntry(_e->id);
+	if( _e->syncFlag % 2 == 1 )
+		return db_delEntry(_e->id);
+	else{
+		_e->syncFlag = _e->syncFlag + 4;
+		return db_modEntry(_e);
+	}
 }
 
 bool addEntry(char* title, char* info, char* date, char* beginTime, char* endTime) {	

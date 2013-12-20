@@ -5,6 +5,7 @@
 #include"entrylist.h"
 #include<stdio.h>
 #include<time.h>
+#include"sync.h"
 
 #define COMM_MAX_LEN 100
 char comm[COMM_MAX_LEN];
@@ -183,6 +184,11 @@ void distribute(){
 			case 'a':
 				if( false == doAdd(comm) )
 					printAlert("wrong input format");
+				break;
+			case 's':
+				sync_init();
+				sync_close();
+				drawEntryList(show_year, show_month, show_day);
 				break;
 			case 'q':
 				// things before exiting
